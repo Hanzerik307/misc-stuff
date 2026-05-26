@@ -90,3 +90,27 @@ We're now going to disable networking.service
 
 `sudo systemctl disable networking.service`
 
+At this point, everything should be ready to go. I typically have easy access to my machines in my house, so if something was wrong, I can login locally and fix it. 
+
+But when you reboot and log back in you will see something like this:
+```
+hanzerik@debian-testing:~$ ip a
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host noprefixroute 
+       valid_lft forever preferred_lft forever
+2: enp5s0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq master br0 state UP group default qlen 1000
+    link/ether 10:66:6a:bb:1d:d6 brd ff:ff:ff:ff:ff:ff
+    altname enx10666abb1dd6
+3: br0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default qlen 1000
+    link/ether 10:66:6a:bb:1d:d6 brd ff:ff:ff:ff:ff:ff
+    inet 192.168.1.145/24 metric 1024 brd 192.168.1.255 scope global dynamic br0
+       valid_lft 85379sec preferred_lft 85379sec
+    inet6 fe80::1266:6aff:febb:1dd6/64 scope link proto kernel_ll 
+       valid_lft forever preferred_lft forever
+```
+
+You can see that `enp5s0` is now slave to `br0`, and it has no IP. `br0` is now master doing all the work and has an IP. You may have noticed in this example that both MACs are the same, thats because I did this example within a Debian VM running on incus, and the VM is using a macvlan network instead of a br0 device to get it's IP on the lan. Without using the `MACAddress=` setting in the VM's netdev file, it wouldn't work.
+But for a normal "Host" system, the above instructions should work fine for creating a `br0` device, and the network configuration files are easily copied over to a new system if needed to re-install...as long as you have backups of them.
