@@ -74,7 +74,7 @@ MACAddress=xx:xx:xx:xx:xx:xx
 
 # Enabling systemd-networkd
 
-By default on Debian 13, systemd-networkd is already installed, just not enabled. At this point we are still using `/etc/network/interfaces.
+By default on Debian 13, systemd-networkd is already installed, just not enabled. At this point we are still using `/etc/network/interfaces`.
 
 To enable systemd-networkd and disable ifupdown (interfaces):
 
