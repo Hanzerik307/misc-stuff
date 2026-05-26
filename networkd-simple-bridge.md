@@ -114,3 +114,5 @@ hanzerik@debian-testing:~$ ip a
 
 You can see that `enp5s0` is now slave to `br0`, and it has no IP. `br0` is now master doing all the work and has an IP. You may have noticed in this example that both MACs are the same, thats because I did this example within a Debian VM running on incus, and the VM is using a macvlan network instead of a br0 device to get it's IP on the lan. Without using the `MACAddress=` setting in the VM's netdev file, it wouldn't work.
 But for a normal "Host" system, the above instructions should work fine for creating a `br0` device, and the network configuration files are easily copied over to a new system if needed to re-install...as long as you have backups of them.
+
+If you need to revert back, just rename the files/folders in /etc/network back to their original name. Disable systemd-networkd, re-enable networking.service .
